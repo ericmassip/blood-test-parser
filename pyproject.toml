@@ -1,0 +1,12 @@
+[project]
+name = "blood-test-parser"
+version = "0.1.0"
+description = "Extract data from blood test documents using Gemini API"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=0.1.0",
+    "langchain-google-genai>=1.0.0",
+    "google-generativeai>=0.3.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+]

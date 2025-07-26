@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Log files
+*.log
+
+# Pycharm
+.idea
+
+# Blood tests, because they're private
+blood_tests
