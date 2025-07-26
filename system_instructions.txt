@@ -37,7 +37,9 @@ No quiero que se añadan las unidades. Las unidades solo están ahí para ayudar
 
 La unidad 10^3/µL es equivalente a la unidad k/µL, significan exactamente lo mismo.
 
-Los Apellidos a veces están separados en 'Primer apellido' y 'Segundo apellido'; júntalos en ese orden.
+Los Apellidos a veces están separados en 'Primer apellido' y 'Segundo apellido'; júntalos en ese orden. Cuando 'Segundo apellido' es 'XX', quiere decir que no hay 'Segundo apellido' así que descarta ese resultado.
+
+No confundir 'Nº de Petición' con 'Nº de muestra', no son lo mismo.
 
 El hospital no siempre está explícitamente detallado con una de las opciones proporcionadas, pero aquí debajo puedes encontrar algunas pistas:
 * Si menciona el hospital Dr. José Molina Orosa, es 'LANZAROTE'.

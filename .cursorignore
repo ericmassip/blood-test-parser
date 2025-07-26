@@ -1,0 +1,6 @@
+# Hide blood_tests folder because they're private
+blood_tests/
+
+# Hide validation_report_*.json and extraction_results_*.json files because they also contain the private data
+validation_report_*.json
+extraction_results_*.json
