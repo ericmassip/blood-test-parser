@@ -6,12 +6,21 @@ Blood Test Parser - Extract data from blood test documents using Gemini API
 import json
 import logging
 import argparse
+import os
 from pathlib import Path
-from typing import Union, List, Dict, Any
+from typing import Dict, Any
 from datetime import datetime
 
 from parser import BloodTestParser
 from validator import BloodTestValidator
+from google_sheets_service import GoogleSheetsService
+
+# LangSmith helps us debug LangGraph and LangChain traces. Go to https://eu.smith.langchain.com/ to see the latest
+# traces. The free tier has 5000 traces per month and the data retention is 14 days.
+os.environ["LANGSMITH_ENDPOINT"] = "https://eu.api.smith.langchain.com"
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_PROJECT"] = "blood-test-parser"
+os.environ["LANGSMITH_API_KEY"] = "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"
 
 def setup_logging() -> logging.Logger:
     """Set up logging configuration"""
@@ -31,7 +40,10 @@ def save_results(results: Dict[str, Any], output_file: Path = None) -> None:
     """Save results to JSON file"""
     if output_file is None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = Path(f"extraction_results_{timestamp}.json")
+        output_file = Path(f"extraction_results/extraction_results_{timestamp}.json")
+    
+    # Ensure directory exists
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
@@ -110,6 +122,16 @@ def main():
         action="store_true",
         help="Enable verbose logging"
     )
+    parser.add_argument(
+        "--spreadsheet",
+        "-s",
+        help="Google Spreadsheet ID to update with results (get from spreadsheet URL)"
+    )
+    parser.add_argument(
+        "--credentials",
+        default="credentials.json",
+        help="Path to Google service account credentials file (default: credentials.json)"
+    )
     
     args = parser.parse_args()
     
@@ -139,6 +161,84 @@ def main():
                 if "error" in result:
                     print(f"  - {filename}: {result['error']}")
         
+        # Update Google Spreadsheet if requested
+        if args.spreadsheet:
+            print(f"\n{'='*50}")
+            print("UPDATING GOOGLE SPREADSHEET")
+            print(f"{'='*50}")
+            
+            try:
+                sheets_service = GoogleSheetsService(credentials_file=args.credentials)
+                
+                for filename, result in results.items():
+                    if "error" in result:
+                        logger.warning(f"Skipping {filename} due to extraction error")
+                        continue
+                    
+                    # Check if we have patient name information
+                    nombre = result.get('NOMBRE')
+                    apellidos = result.get('APELLIDOS')
+                    
+                    if not nombre or not apellidos:
+                        logger.warning(f"Skipping {filename}: Missing patient name information (NOMBRE: {nombre}, APELLIDOS: {apellidos})")
+                        sheets_service.print_copy_paste_values(result, nombre or "UNKNOWN", apellidos or "UNKNOWN")
+                        continue
+                    
+                    print(f"\nProcessing {filename} - Patient: {nombre} {apellidos}")
+                    
+                    # Find patient row
+                    row_number, sheet_name, status_message = sheets_service.find_patient_row(
+                        args.spreadsheet, nombre, apellidos
+                    )
+                    
+                    print(f"  Status: {status_message}")
+                    
+                    if row_number is not None and sheet_name is not None:
+                        # Update the spreadsheet
+                        success = sheets_service.update_patient_data(
+                            args.spreadsheet, sheet_name, row_number, result
+                        )
+                        
+                        if success:
+                            print(f"  ✓ Successfully updated sheet '{sheet_name}' row {row_number}")
+                        else:
+                            print(f"  ✗ Failed to update spreadsheet")
+                            sheets_service.print_copy_paste_values(result, nombre, apellidos)
+                    else:
+                        # Patient not found or multiple matches - print copy-paste values
+                        sheets_service.print_copy_paste_values(result, nombre, apellidos)
+                
+                print(f"\nSpreadsheet update process completed!")
+                
+            except FileNotFoundError as e:
+                logger.error(f"Google Sheets setup error: {str(e)}")
+                print(f"\nTo use Google Sheets integration:")
+                print(f"1. Go to Google Cloud Console (console.cloud.google.com)")
+                print(f"2. Create a new project or select an existing one")
+                print(f"3. Enable the Google Sheets API")
+                print(f"4. Create a service account and download the JSON key file")
+                print(f"5. Share your Google Spreadsheet with the service account email")
+                print(f"6. Save the key file as 'credentials.json' in this directory")
+                return 1
+                
+            except Exception as e:
+                logger.error(f"Error updating Google Spreadsheet: {str(e)}")
+                print(f"\nFailed to update spreadsheet. Printing copy-paste values for manual entry:")
+                
+                # Print copy-paste values for all successful extractions
+                try:
+                    sheets_service = GoogleSheetsService(credentials_file=args.credentials)
+                    for filename, result in results.items():
+                        if "error" not in result:
+                            nombre = result.get('NOMBRE', 'UNKNOWN')
+                            apellidos = result.get('APELLIDOS', 'UNKNOWN')
+                            sheets_service.print_copy_paste_values(result, nombre, apellidos)
+                except:
+                    # If we can't create sheets service, just print the raw data
+                    for filename, result in results.items():
+                        if "error" not in result:
+                            print(f"\n{filename}: {json.dumps(result, indent=2)}")
+        
         # Perform validation if requested
         if args.validate:
             print(f"\n{'='*50}")
@@ -156,7 +256,7 @@ def main():
                     report_path = Path(args.validation_report)
                 else:
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    report_path = Path(f"validation_report_{timestamp}.json")
+                    report_path = Path(f"validation_reports/validation_report_{timestamp}.json")
                 
                 validator.save_validation_report(validation_results, report_path)
                 print(f"\nDetailed validation report saved to: {report_path}")

@@ -284,7 +284,10 @@ class BloodTestValidator:
         if output_file is None:
             from datetime import datetime
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_file = Path(f"validation_report_{timestamp}.json")
+            output_file = Path(f"validation_reports/validation_report_{timestamp}.json")
+        
+        # Ensure directory exists
+        output_file.parent.mkdir(parents=True, exist_ok=True)
         
         report = self.generate_validation_report(validation_results)
         

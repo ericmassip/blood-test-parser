@@ -27,7 +27,6 @@ Eres un asistente que extrae datos de los resultados de análisis de sangre huma
 * Strongyloides (normalmente "Positivo" o "Negativo"), json key = STRONGYLOIDES
 * Sarampión (normalmente "Positivo" o "Negativo"), json key = SARAMPION
 * Schistosoma Ac (también llamado Bilharziosis) (normalmente "Positivo" o "Negativo"), json key = SCHISTOSOMA
-* Hemoglobinopatía (extraer como número, ver tabla de conversión de número a cadena en las instrucciones a continuación), json key = HEMOGLOBINOPATIA
 
 Si no puedes encontrar ninguno de los parámetros anteriores, establécelos como null.
 
@@ -48,14 +47,4 @@ En ocasiones, hay documentos que incluyen secciones relacionadas con pruebas de 
 
 Para los casos binarios de "Positivo" vs "Negativo", devuelve 1 para "Positivo" y 0 para "Negativo". Si no dice "Positivo" o "Negativo", establece el valor como null.
 
-Para Hemoglobinopatía, hay múltiples cadenas posibles, pero el resultado debe ser uno de los siguientes (establecer como null si no se encuentra):
-0=No
-1=DREPANOCITOSIS
-2=A-TALASEMIA
-3=B-TALASEMIA MINOR
-4=RASGO HB S
-5=RASGO HB C
-6=PERSISTENCIA HB F
-7=homocigosis HbC
-8=portador Hb de HOPE
-9=Indice Metzner <13
+Si hay dos resultados de Hepatitis A, habitualmente contienen 'IgM' o 'IgG', devuelve la que contiene 'IgG'.

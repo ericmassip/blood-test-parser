@@ -17,5 +17,9 @@ wheels/
 
 # Blood tests, because they're private
 blood_tests
-validation_report_*.json
-extraction_results_*.json
+validation_reports/
+extraction_results/
+
+# Google Sheets credentials
+credentials.json
+*credentials*.json
