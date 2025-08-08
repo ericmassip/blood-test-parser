@@ -1,0 +1,28 @@
+<form
+  id="upload-form"
+  class="form"
+  hx-post="/extract"
+  hx-target="#result"
+  hx-swap="innerHTML"
+  enctype="multipart/form-data"
+>
+  <div class="form__row">
+    <label for="file" class="label">Archivo PDF</label>
+    <input
+      id="file"
+      name="file"
+      type="file"
+      accept="application/pdf"
+      required
+      class="input"
+    />
+  </div>
+  <div id="form-actions" class="form__actions">
+    <button type="submit" class="btn btn--primary">
+      Extraer datos
+      <span class="hx-indicator" aria-hidden="true"></span>
+    </button>
+  </div>
+</form>
+
+

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extractor de resultados de analíticas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+  </head>
+  <body>
+    <main id="root" class="container">
+      <section class="card">
+        <header class="card__header">
+          <h1>Extractor de resultados de analíticas</h1>
+          <p class="muted">Sube un PDF con la analítica y copia la fila lista para Google Sheets.</p>
+        </header>
+
+        <section aria-labelledby="howto-title" class="instructions">
+          <h2 id="howto-title">Cómo usar esta herramienta</h2>
+          <ol>
+            <li>Selecciona el archivo PDF de la analítica.</li>
+            <li>Pulsa «Extraer datos» y espera a que se muestren los resultados.</li>
+            <li>Revisa la tabla generada.</li>
+            <li>Haz clic en «Copiar fila completa» y pega en Google Sheets.</li>
+            <li>Para subir otro PDF, pulsa en «Subir otro PDF».</li>
+          </ol>
+          <p class="muted">
+            Nota: las columnas «Hepatitis B codigo», «Urianálisis» y «Parasitos en orina» siempre aparecen vacías porque no se extraen del PDF.
+            Se incluyen vacías para mantener la alineación exacta al pegar en la hoja de Google Sheets.
+          </p>
+        </section>
+
+        {% include 'partials/form.html' %}
+
+        <div id="result" class="result" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+  </html>
+
+

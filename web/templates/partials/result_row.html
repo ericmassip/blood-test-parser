@@ -1,0 +1,35 @@
+{% if error_message %}
+  <div class="alert alert--error">{{ error_message }}</div>
+  <div class="form__actions">
+    <button class="btn" hx-get="/" hx-target="#root" hx-swap="outerHTML">Subir otro PDF</button>
+  </div>
+{% else %}
+  <div class="result__actions">
+    <button type="button" class="btn btn--primary" data-tsv="{{ tsv|e }}">Copiar fila completa</button>
+    <button class="btn" hx-get="/" hx-target="#root" hx-swap="outerHTML">Subir otro PDF</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          {% for header in headers %}
+            <th scope="col">{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for v in values %}
+            <td>{{ v }}</td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  {# Hide the submit button using out-of-band swap by clearing the form actions #}
+  <div id="form-actions" hx-swap-oob="true"></div>
+{% endif %}
+
+
