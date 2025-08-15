@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import logging
 from typing import Any, Dict, List, Tuple
+from dotenv import load_dotenv
 
 from flask import Flask, render_template, request
 
@@ -27,8 +28,11 @@ app = Flask(
     static_folder=str(Path(__file__).parent / "static"),
 )
 
-# Limit uploads to 20 MB
-app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
+# Load environment variables from .env during local development
+load_dotenv()
+
+# Limit uploads to 5 MB for Vercel compatibility
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 # Basic logging setup for clearer diagnostics in development
 logging.basicConfig(

@@ -10,17 +10,11 @@ import os
 from pathlib import Path
 from typing import Dict, Any
 from datetime import datetime
+from dotenv import load_dotenv
 
 from parser import BloodTestParser
 from validator import BloodTestValidator
 from google_sheets_service import GoogleSheetsService
-
-# LangSmith helps us debug LangGraph and LangChain traces. Go to https://eu.smith.langchain.com/ to see the latest
-# traces. The free tier has 5000 traces per month and the data retention is 14 days.
-os.environ["LANGSMITH_ENDPOINT"] = "https://eu.api.smith.langchain.com"
-os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_PROJECT"] = "blood-test-parser"
-os.environ["LANGSMITH_API_KEY"] = "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"
 
 def setup_logging() -> logging.Logger:
     """Set up logging configuration"""
@@ -35,6 +29,9 @@ def setup_logging() -> logging.Logger:
     return logging.getLogger(__name__)
 
 logger = setup_logging()
+
+# Load environment variables from .env for local runs
+load_dotenv()
 
 def save_results(results: Dict[str, Any], output_file: Path = None) -> None:
     """Save results to JSON file"""
