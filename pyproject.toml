@@ -2,7 +2,7 @@
 name = "blood-test-parser"
 version = "0.1.0"
 description = "Extract data from blood test documents using Gemini API"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "flask>=3.0.0",
     "langchain>=0.1.0",
