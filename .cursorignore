@@ -4,3 +4,6 @@ blood_tests/
 # Hide validation_reports and extraction_results directories because they contain private data
 validation_reports/
 extraction_results/
+
+# Hide environment files from AI tools
+.env

@@ -23,3 +23,6 @@ extraction_results/
 # Google Sheets credentials
 credentials.json
 *credentials*.json
+
+# Environment variable files
+.env
