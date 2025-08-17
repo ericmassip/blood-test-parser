@@ -1,7 +1,8 @@
 {
+  "version": 2,
   "functions": {
     "web/app.py": {
-      "runtime": "python3.12"
+      "runtime": "python@3.12"
     }
   },
   "routes": [
