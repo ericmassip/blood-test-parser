@@ -26,3 +26,4 @@ credentials.json
 
 # Environment variable files
 .env
+.env.local

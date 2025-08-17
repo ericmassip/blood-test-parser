@@ -7,3 +7,4 @@ extraction_results/
 
 # Hide environment files from AI tools
 .env
+.env.local
