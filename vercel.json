@@ -1,13 +1,13 @@
 {
-  "version": 2,
   "functions": {
     "web/app.py": {
-      "runtime": "python@3.12"
+      "runtime": "python3.12"
     }
   },
-  "routes": [
-    { "src": "/(.*)", "dest": "/web/app.py" }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/web/app"
+    }
   ]
 }
-
-
