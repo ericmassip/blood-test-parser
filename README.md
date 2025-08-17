@@ -4,7 +4,7 @@ A Python application that extracts blood test data from PDF documents using Goog
 
 The app is live in https://blood-test-parser-pqfe.vercel.app/.
 
-![Captura de pantalla 2025-08-17 a las 19.17.02.png](../../Desktop/Captura%20de%20pantalla%202025-08-17%20a%20las%2019.17.02.png)
+<img width="1215" height="603" alt="Captura de pantalla 2025-08-17 a las 19 17 02" src="https://github.com/user-attachments/assets/ee6fa0d5-94f9-4381-a7cb-b9b406e4d300" />
 
 ## Features
 
