@@ -2,6 +2,10 @@
 
 A Python application that extracts blood test data from PDF documents using Google's Gemini AI and optionally updates Google Spreadsheets with the results.
 
+The app is live in https://blood-test-parser-pqfe.vercel.app/.
+
+![Captura de pantalla 2025-08-17 a las 19.17.02.png](../../Desktop/Captura%20de%20pantalla%202025-08-17%20a%20las%2019.17.02.png)
+
 ## Features
 
 - **PDF Text Extraction**: Extract blood test data from PDF documents
