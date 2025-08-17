@@ -70,14 +70,6 @@ The system:
 5. Updates the matching row in the correct sheet with blood test results
 6. Provides copy-paste values for unmatched patients
 
-### Supported Blood Test Parameters
-
-The following parameters are automatically mapped to spreadsheet columns:
-
-- **Haematology**: Hemoglobin, Haematocrit, VCM, ADE, Platelets, Leukocytes, Eosinophils
-- **Biochemistry**: Glucose, Creatinine, ALT, AST, GGT, Cholesterol, Ferritin
-- **Serology**: HIV, Hepatitis A/C, Syphilis, Strongyloides, Measles, Schistosoma
-
 ## Command Line Options
 
 ```bash
@@ -226,26 +218,3 @@ Enable verbose logging for troubleshooting:
 ```bash
 python main.py file.pdf --spreadsheet "ID" --verbose
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## Security Notes
-
-- Never commit `credentials.json` to version control
-- Rotate service account keys periodically  
-- Only share spreadsheets with necessary service accounts
-- Use environment variables for API keys
-
-## Support
-
-For issues and questions:
-1. Check the troubleshooting section
-2. Review the setup guide
-3. Enable verbose logging for detailed error information
-4. Create an issue with logs and error details
