@@ -15,6 +15,9 @@ wheels/
 # Pycharm
 .idea
 
+# Vercel
+.vercel
+
 # Blood tests, because they're private
 blood_tests
 validation_reports/

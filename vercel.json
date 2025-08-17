@@ -1,13 +1,8 @@
 {
-  "functions": {
-    "web/app.py": {
-      "runtime": "python3.12"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/web/app"
+      "destination": "/api/index"
     }
   ]
 }
