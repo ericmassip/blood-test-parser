@@ -33,6 +33,79 @@
           </p>
         </section>
 
+        <section aria-labelledby="fields-title" class="fields-overview">
+          <h2 id="fields-title">Datos extraídos</h2>
+          <div class="fields-grid">
+
+            <div class="fields-group">
+              <h3 class="fields-group__title">Paciente</h3>
+              <ul class="fields-list">
+                <li><span class="field-name">Nombre y apellidos</span></li>
+                <li><span class="field-name">Hospital</span><span class="field-desc">NEGRIN · INSULAR · FUERTEVENTURA · LANZAROTE</span></li>
+                <li><span class="field-name">N.º historia clínica</span></li>
+                <li><span class="field-name">N.º muestra</span></li>
+              </ul>
+            </div>
+
+            <div class="fields-group">
+              <h3 class="fields-group__title">Hemograma</h3>
+              <ul class="fields-list">
+                <li><span class="field-name">Hemoglobina</span><span class="field-desc">g/dl</span></li>
+                <li><span class="field-name">Hematocrito</span><span class="field-desc">%</span></li>
+                <li><span class="field-name">VCM</span><span class="field-desc">fl</span></li>
+                <li><span class="field-name">ADE (RDW)</span><span class="field-desc">%</span></li>
+                <li><span class="field-name">Plaquetas</span><span class="field-desc">10³/µL</span></li>
+                <li><span class="field-name">Leucocitos</span><span class="field-desc">10³/µL</span></li>
+                <li><span class="field-name">Eosinófilos totales</span><span class="field-desc">10³/µL</span></li>
+                <li><span class="field-name">Eosinófilos</span><span class="field-desc">%</span></li>
+              </ul>
+            </div>
+
+            <div class="fields-group">
+              <h3 class="fields-group__title">Bioquímica</h3>
+              <ul class="fields-list">
+                <li><span class="field-name">Glucosa</span><span class="field-desc">mg/dl</span></li>
+                <li><span class="field-name">Creatinina</span><span class="field-desc">mg/dl</span></li>
+                <li><span class="field-name">ALT / GPT</span><span class="field-desc">U/L</span></li>
+                <li><span class="field-name">AST / GOT</span><span class="field-desc">U/L</span></li>
+                <li><span class="field-name">GGT</span><span class="field-desc">U/L</span></li>
+                <li><span class="field-name">Colesterol</span><span class="field-desc">mg/dL</span></li>
+                <li><span class="field-name">Ferritina</span><span class="field-desc">ng/mL</span></li>
+              </ul>
+            </div>
+
+            <div class="fields-group">
+              <h3 class="fields-group__title">Serología <span class="fields-group__badge">0 Neg · 1 Pos</span></h3>
+              <ul class="fields-list">
+                <li><span class="field-name">VIH</span></li>
+                <li><span class="field-name">Hepatitis A (VHA)</span></li>
+                <li><span class="field-name">Hepatitis C (VHC)</span></li>
+                <li><span class="field-name">Sífilis (Lues)</span></li>
+                <li><span class="field-name">Strongyloides</span></li>
+                <li><span class="field-name">Sarampión</span></li>
+                <li><span class="field-name">Schistosoma</span></li>
+              </ul>
+            </div>
+
+            <div class="fields-group">
+              <h3 class="fields-group__title">Hemoglobinopatía <span class="fields-group__badge">código</span></h3>
+              <ul class="fields-list">
+                <li><span class="field-name">0</span><span class="field-desc">No detectada</span></li>
+                <li><span class="field-name">1</span><span class="field-desc">Drepanocitosis</span></li>
+                <li><span class="field-name">2</span><span class="field-desc">α-Talasemia</span></li>
+                <li><span class="field-name">3</span><span class="field-desc">β-Talasemia minor</span></li>
+                <li><span class="field-name">4</span><span class="field-desc">Rasgo Hb S</span></li>
+                <li><span class="field-name">5</span><span class="field-desc">Rasgo Hb C</span></li>
+                <li><span class="field-name">6</span><span class="field-desc">Persistencia Hb F</span></li>
+                <li><span class="field-name">7</span><span class="field-desc">Homocigosis HbC</span></li>
+                <li><span class="field-name">8</span><span class="field-desc">Portador Hb de Hope</span></li>
+                <li><span class="field-name">9</span><span class="field-desc">Índice Metzner &lt;13</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
         {% include 'partials/form.html' %}
 
         <div id="result" class="result" aria-live="polite"></div>
