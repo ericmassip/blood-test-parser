@@ -233,62 +233,45 @@ class GoogleSheetsService:
             row_number and sheet_name are None if not found or if there are duplicates
         """
         try:
-            # Get all sheets in the spreadsheet
-            sheets = self.get_spreadsheet_sheets(spreadsheet_id)
-            
-            if not sheets:
-                return None, None, "No sheets found in spreadsheet"
-            
+            sheet_name = 'Principal'
+
             # Create full name combinations to search for
             full_name_1 = f"{nombre} {apellidos}".lower().strip()
             full_name_2 = f"{apellidos} {nombre}".lower().strip()
-            
-            logger.info(f"Searching for patient: '{full_name_1}' or '{full_name_2}' across {len(sheets)} sheets")
-            
-            # Search across all sheets
-            all_matches = []  # List of (sheet_name, row_number) tuples
-            
-            for sheet in sheets:
-                sheet_name = sheet['properties']['title']
-                logger.debug(f"Searching in sheet: '{sheet_name}'")
-                
-                try:
-                    # Get data from this sheet
-                    data = self.get_spreadsheet_data(spreadsheet_id, sheet_name)
-                    
-                    if not data:
-                        logger.debug(f"Sheet '{sheet_name}' is empty, skipping")
-                        continue
-                    
-                    # Find FILIACION column in this sheet
-                    header_row = data[0] if data else []
-                    filiacion_col = None
-                    
-                    for i, cell in enumerate(header_row):
-                        if cell and 'FILIACION' in str(cell).upper():
-                            filiacion_col = i
-                            break
-                    
-                    if filiacion_col is None:
-                        logger.debug(f"No FILIACION column found in sheet '{sheet_name}', skipping")
-                        continue
-                    
-                    # Search for patient in this sheet
-                    for row_index, row in enumerate(data[1:], start=2):  # Start from row 2 (skip header)
-                        if len(row) > filiacion_col:
-                            filiacion_value = str(row[filiacion_col]).lower().strip()
-                            
-                            if filiacion_value == full_name_1 or filiacion_value == full_name_2:
-                                all_matches.append((sheet_name, row_index))
-                                logger.info(f"Found patient in sheet '{sheet_name}' at row {row_index}")
-                
-                except Exception as e:
-                    logger.warning(f"Error searching sheet '{sheet_name}': {str(e)}")
-                    continue
-            
+
+            logger.info(f"Searching for patient: '{full_name_1}' or '{full_name_2}' in sheet '{sheet_name}'")
+
+            # Get data from the Principal sheet
+            data = self.get_spreadsheet_data(spreadsheet_id, sheet_name)
+
+            if not data:
+                return None, None, f"Sheet '{sheet_name}' is empty"
+
+            # Find NOMBRE Y APELLIDO column
+            header_row = data[0]
+            nombre_col = None
+
+            for i, cell in enumerate(header_row):
+                if cell and 'NOMBRE Y APELLIDO' in str(cell).upper():
+                    nombre_col = i
+                    break
+
+            if nombre_col is None:
+                return None, None, f"No 'NOMBRE Y APELLIDO' column found in sheet '{sheet_name}'"
+
+            # Search for patient
+            all_matches = []
+            for row_index, row in enumerate(data[1:], start=2):  # Start from row 2 (skip header)
+                if len(row) > nombre_col:
+                    cell_value = str(row[nombre_col]).lower().strip()
+
+                    if cell_value == full_name_1 or cell_value == full_name_2:
+                        all_matches.append((sheet_name, row_index))
+                        logger.info(f"Found patient in sheet '{sheet_name}' at row {row_index}")
+
             # Handle results
             if len(all_matches) == 0:
-                return None, None, f"Patient not found in any sheet: {full_name_1}"
+                return None, None, f"Patient not found in sheet '{sheet_name}': {full_name_1}"
             elif len(all_matches) == 1:
                 sheet_name, row_number = all_matches[0]
                 logger.info(f"Found patient in sheet '{sheet_name}' at row {row_number}")

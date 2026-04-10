@@ -62,7 +62,7 @@ python main.py blood_tests/ --spreadsheet "SPREADSHEET_ID" --credentials "creden
 
 4. **GoogleSheetsService** (`google_sheets_service.py`):
    - Authenticates via service account credentials
-   - Multi-sheet patient search across spreadsheet tabs
+   - Patient search restricted to sheet named 'Principal'
    - Smart patient matching using name combinations
    - Column mapping for medical parameters
    - Spanish locale number formatting for copy-paste functionality
@@ -76,7 +76,7 @@ python main.py blood_tests/ --spreadsheet "SPREADSHEET_ID" --credentials "creden
 
 ### Key Features
 
-- **Multi-sheet Search**: Searches for patients across all spreadsheet tabs using FILIACION column
+- **Single-sheet Search**: Searches for patients in the 'Principal' sheet using NOMBRE Y APELLIDO column
 - **Smart Patient Matching**: Tries both "NOMBRE APELLIDOS" and "APELLIDOS NOMBRE" patterns
 - **Spanish Medical Format**: Handles Spanish number formats (comma as decimal separator)
 - **Batch Processing**: Processes entire directories of PDF files
@@ -96,12 +96,12 @@ system_instructions.txt # Spanish extraction prompts for Gemini
 ## Google Sheets Integration
 
 The system expects spreadsheets with:
-- FILIACION column containing patient names
+- A sheet named 'Principal' containing patient data
+- NOMBRE Y APELLIDO column containing patient names
 - Specific column headers matching medical parameters
-- Multiple sheets/tabs supported for patient organization
 
 Patient matching logic:
-1. Search all sheets for FILIACION column
+1. Search the 'Principal' sheet for NOMBRE Y APELLIDO column
 2. Try "NOMBRE APELLIDOS" and "APELLIDOS NOMBRE" combinations
 3. Case-insensitive matching with space tolerance
 4. Handle duplicates and missing patients gracefully
