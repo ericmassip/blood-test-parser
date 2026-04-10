@@ -8,8 +8,8 @@ import base64
 from pathlib import Path
 from typing import Union, Dict, Any
 
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.schema import HumanMessage, SystemMessage
+from langchain.chat_models import init_chat_model
+from langchain_core.messages import HumanMessage, SystemMessage
 
 from models import BloodTestData
 
@@ -32,13 +32,13 @@ class BloodTestParser:
         if not api_key:
             raise ValueError("Google API key not provided. Set GOOGLE_API_KEY environment variable or pass api_key parameter.")
         
-        base_llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
+        base_llm = init_chat_model(
+            "google_genai:gemini-2.5-flash",  # Cheaper and better than gemini-3-flash-preview bc it has no thinking
+            temperature=0,
             google_api_key=api_key,
-            temperature=0.1  # Low temperature for consistent extraction
         )
-        
-        self.llm = base_llm.with_structured_output(BloodTestData)
+
+        self.llm = base_llm.with_structured_output(BloodTestData, include_raw=True, method="json_schema")
         
         self.system_instructions = self._load_system_instructions()
         
@@ -108,14 +108,22 @@ class BloodTestParser:
             logger.info(f"Sending PDF request to Gemini API for {file_path.name}")
             logger.info(f"PDF size: {file_path.stat().st_size} bytes")
             
-            # Make API call - this will return a structured BloodTestData object
-            response = self.llm.invoke(messages)
-            
+            # Make API call - returns {"raw": AIMessage, "parsed": BloodTestData|None, "parsing_error": Exception|None}
+            result = self.llm.invoke(messages)
+
             logger.info(f"Received structured response for {file_path.name}")
-            logger.debug(f"Structured response: {response}")
-            
+
+            if result["parsing_error"] is not None:
+                raise ValueError(f"Structured output parsing failed: {result['parsing_error']}")
+
+            if result["parsed"] is None:
+                raise ValueError(
+                    f"Model returned None — structured output parsing failed. "
+                    f"Raw output: {result['raw'].content}"
+                )
+
             # Convert Pydantic model to dictionary
-            extracted_data = response.model_dump()
+            extracted_data = result["parsed"].model_dump()
             logger.info(f"Successfully extracted data from {file_path.name}")
             return extracted_data
                 

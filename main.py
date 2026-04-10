@@ -78,9 +78,15 @@ def print_validation_summary(validation_results):
             print(f"  Extra fields: {', '.join(result.extra_fields)}")
         
         # Show problematic fields (accuracy < 80%)
-        problematic = [field for field, acc in result.field_accuracies.items() if acc < 80]
+        problematic = {field: acc for field, acc in result.field_accuracies.items() if acc < 80}
         if problematic:
-            print(f"  Low accuracy fields: {', '.join(problematic)}")
+            print(f"  Low accuracy fields:")
+            for field in sorted(problematic, key=lambda f: result.field_accuracies[f]):
+                diff = result.field_differences.get(field, {})
+                expected = diff.get('expected', 'N/A')
+                actual = diff.get('actual', 'N/A')
+                acc = result.field_accuracies[field]
+                print(f"    {field:<30} {acc:>5.1f}%  expected={expected!r}  actual={actual!r}")
 
 def main():
     """Main function"""
