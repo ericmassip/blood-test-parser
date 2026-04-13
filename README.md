@@ -9,7 +9,7 @@ an invaluable data source for both clinical follow-up and future medical researc
 
 The app is live in https://blood-test-parser.vercel.app/.
 
-<img width="1215" height="603" alt="Captura de pantalla 2025-08-17 a las 19 17 02" src="https://github.com/user-attachments/assets/ee6fa0d5-94f9-4381-a7cb-b9b406e4d300" />
+<img width="1193" height="929" alt="Captura de pantalla 2026-04-13 a las 9 56 49" src="https://github.com/user-attachments/assets/f386ef82-e173-4b02-a5cd-f81deb6dad8f" />
 
 ## Features
 
