@@ -1,8 +1,13 @@
 # Blood Test Parser
 
-A Python application that extracts blood test data from PDF documents using Google's Gemini AI and optionally updates Google Spreadsheets with the results.
+A Python application that extracts blood test data from PDF documents using Google's Gemini AI and optionally updates
+Google Spreadsheets with the results.
 
-The app is live in https://blood-test-parser-pqfe.vercel.app/.
+This app was developed to support healthcare professionals within the Servicio Canario de Salud who assist migrant
+children arriving in the Canary Islands. The tool streamlines the recording of historical blood test results, providing
+an invaluable data source for both clinical follow-up and future medical research.
+
+The app is live in https://blood-test-parser.vercel.app/.
 
 <img width="1215" height="603" alt="Captura de pantalla 2025-08-17 a las 19 17 02" src="https://github.com/user-attachments/assets/ee6fa0d5-94f9-4381-a7cb-b9b406e4d300" />
 
@@ -38,16 +43,19 @@ The app is live in https://blood-test-parser-pqfe.vercel.app/.
 ## Basic Usage
 
 ### Extract data from a single PDF:
+
 ```bash
 python main.py path/to/blood_test.pdf
 ```
 
 ### Process multiple PDFs in a directory:
+
 ```bash
 python main.py path/to/blood_tests_directory/
 ```
 
 ### Extract and validate results:
+
 ```bash
 python main.py path/to/file.pdf --validate --validation-threshold 85.0
 ```
@@ -67,6 +75,7 @@ python main.py path/to/blood_test.pdf --spreadsheet "YOUR_SPREADSHEET_ID"
 ### How It Works
 
 The system:
+
 1. Extracts blood test data from PDFs using AI
 2. Searches for patients across ALL sheets/tabs in your spreadsheet using the "FILIACION" column
 3. Matches patients by `NOMBRE + APELLIDOS` (with fallback to `APELLIDOS + NOMBRE`)
@@ -97,11 +106,13 @@ Options:
 ## Examples
 
 ### Basic extraction:
+
 ```bash
 python main.py blood_test.pdf --api-key "your_api_key"
 ```
 
 ### Extract and update spreadsheet:
+
 ```bash
 python main.py blood_tests/ \
   --spreadsheet "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" \
@@ -109,6 +120,7 @@ python main.py blood_tests/ \
 ```
 
 ### Full validation workflow:
+
 ```bash
 python main.py blood_tests/ \
   --validate \
@@ -124,7 +136,7 @@ The extracted data follows this schema:
 ```json
 {
   "NOMBRE": "JUAN",
-  "APELLIDOS": "GARCIA RODRIGUEZ", 
+  "APELLIDOS": "GARCIA RODRIGUEZ",
   "HOSPITAL": "NEGRIN",
   "NRO_HISTORIA_CLINICA": "12345678",
   "NRO_MUESTRA": "ABC123456",
@@ -156,16 +168,19 @@ The extracted data follows this schema:
 ## Files Generated
 
 - **Extraction Results**: `extraction_results/extraction_results_TIMESTAMP.json`
-- **Validation Reports**: `validation_reports/validation_report_TIMESTAMP.json` 
+- **Validation Reports**: `validation_reports/validation_report_TIMESTAMP.json`
 - **Log Files**: `blood_test_parser.log`
 
 ## Configuration
 
 ### Environment Variables
+
 - `GOOGLE_API_KEY`: Your Google Gemini API key
 
 ### Google Sheets Setup
+
 See [GOOGLE_SHEETS_SETUP.md](GOOGLE_SHEETS_SETUP.md) for detailed instructions on:
+
 - Creating a Google Cloud project
 - Enabling APIs
 - Setting up service account credentials
@@ -198,22 +213,22 @@ The system handles various error scenarios:
 ### Common Issues
 
 1. **Authentication Errors**:
-   - Verify `credentials.json` exists and is valid
-   - Check spreadsheet sharing with service account email
+    - Verify `credentials.json` exists and is valid
+    - Check spreadsheet sharing with service account email
 
 2. **Patient Not Found**:
-   - Verify FILIACION column exists in spreadsheet
-   - Check patient name formatting (spaces, accents, etc.)
-   - Use `--verbose` flag for detailed matching logs
+    - Verify NOMBRE Y APELLIDO column exists in spreadsheet
+    - Check patient name formatting (spaces, accents, etc.)
+    - Use `--verbose` flag for detailed matching logs
 
 3. **API Rate Limits**:
-   - The system handles rate limiting automatically
-   - Large batches may take longer to process
+    - The system handles rate limiting automatically
+    - Large batches may take longer to process
 
 4. **Column Mapping Issues**:
-   - Ensure spreadsheet headers match expected column names
-   - Check for typos in column headers
-   - Use case-insensitive matching
+    - Ensure spreadsheet headers match expected column names
+    - Check for typos in column headers
+    - Use case-insensitive matching
 
 ### Debug Mode
 
@@ -222,3 +237,9 @@ Enable verbose logging for troubleshooting:
 ```bash
 python main.py file.pdf --spreadsheet "ID" --verbose
 ```
+
+## Architectural decisions
+
+Originally built as a small-scale experiment, this project loads htmx via a local minified file. This bypasses CDN
+restrictions present in the Servicio Canario de Salud's environment (Microsoft Edge). While migrating to a bundler like
+Vite or Webpack is planned, the local file remains for now as htmx is our only—and very lightweight—dependency.
