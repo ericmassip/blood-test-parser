@@ -74,8 +74,8 @@ def _build_headers_and_values(extracted: Dict[str, Any]) -> Tuple[List[str], Lis
         else:
             value_to_render = raw_value
 
-            # Apply domain-specific transformation for eosinophils, mirroring the Sheets logic
-            if json_key == "EOSINOFILOS_TOTALES" and isinstance(raw_value, (int, float)):
+            # Apply ×1000 transformation for some fields
+            if json_key in ("EOSINOFILOS_TOTALES", "NEUTROFILOS") and isinstance(raw_value, (int, float)):
                 value_to_render = raw_value * 1000
 
             if isinstance(value_to_render, (int, float)):

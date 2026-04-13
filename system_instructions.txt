@@ -20,3 +20,5 @@ En ocasiones, hay documentos que incluyen secciones relacionadas con pruebas de 
 Para los casos binarios de "Positivo" vs "Negativo", devuelve 1 para "Positivo" y 0 para "Negativo". Si no dice "Positivo" o "Negativo", establece el valor como null.
 
 Si hay dos resultados de Hepatitis A, habitualmente contienen 'IgM' o 'IgG', devuelve la que contiene 'IgG'.
+
+Para NEUTROFILOS, extrae siempre el valor del recuento absoluto en 10^3/µL, no el porcentaje.

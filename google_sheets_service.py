@@ -20,11 +20,13 @@ class GoogleSheetsService:
     # Column mapping from JSON keys to spreadsheet columns (in order)
     COLUMN_MAPPING = {
         'HEMOGLOBINA': 'Hb (g/dl) 12-18',
-        'HEMATOCRITO': 'Hto (%) 36-50', 
+        'HEMATOCRITO': 'Hto (%) 36-50',
         'VCM': 'VCM (fl) (70-98)',
         'ADE': 'ADE (>16,5)',
+        'HEMATIES': 'Hematíes (x10^6/µL)',
         'PLAQUETAS': 'Plaquetas (x10^3/µL) 100-450',
         'LEUCOCITOS': 'Leucos (x10^3/µL) 5-12',
+        'NEUTROFILOS': 'Neutrófilos',
         'EOSINOFILOS_TOTALES': 'Eo. Totales (mayor o = 450)',
         'EOSINOFILOS_PORCENTAJE': 'Eo (%) (mayor o = a 5)',
         'GLUCOSA': 'Glu. (mg/dl) 60-110',
@@ -34,6 +36,7 @@ class GoogleSheetsService:
         'GGT': 'GGT (U/L) > 55',
         'COLESTEROL': 'Col. T (100-200)',
         'FERRITINA': 'Ferritina (15-120)',
+        'IST': 'IST (%)',
         'VIH': 'VIH',
         'VHC': 'VHC',
         'VHA': 'VHA',
@@ -322,9 +325,9 @@ class GoogleSheetsService:
                 if col_index is not None and json_key in blood_test_data:
                     value = blood_test_data[json_key]
                     if value is not None:
-                        # Apply custom transformations for specific fields
-                        if json_key == 'EOSINOFILOS_TOTALES' and isinstance(value, (int, float)):
-                            value = value * 1000  # Convert format for spreadsheet
+                        # Apply ×1000 transformation for some fields
+                        if json_key in ('EOSINOFILOS_TOTALES', 'NEUTROFILOS') and isinstance(value, (int, float)):
+                            value = value * 1000
                         
                         # Convert column index to letter (A, B, C, etc.)
                         col_letter = self._column_index_to_letter(col_index)
@@ -391,10 +394,10 @@ class GoogleSheetsService:
             headers.append(spreadsheet_column)
             value = blood_test_data.get(json_key)
             if value is not None:
-                # Apply the same transformation as in update_patient_data
-                if json_key == 'EOSINOFILOS_TOTALES' and isinstance(value, (int, float)):
-                    value = value * 1000  # Convert format for spreadsheet
-                
+                # Apply ×1000 transformation for some fields
+                if json_key in ('EOSINOFILOS_TOTALES', 'NEUTROFILOS') and isinstance(value, (int, float)):
+                    value = value * 1000
+
                 # Format numbers using Spanish locale (comma as decimal separator)
                 if isinstance(value, (int, float)):
                     formatted_value = self._format_number_spanish(value)
@@ -475,10 +478,10 @@ class GoogleSheetsService:
             headers.append(spreadsheet_column)
             value = blood_test_data.get(json_key)
             if value is not None:
-                # Apply the same transformation as in update_patient_data
-                if json_key == 'EOSINOFILOS_TOTALES' and isinstance(value, (int, float)):
-                    value = value * 1000  # Convert format for spreadsheet
-                
+                # Apply ×1000 transformation for some fields
+                if json_key in ('EOSINOFILOS_TOTALES', 'NEUTROFILOS') and isinstance(value, (int, float)):
+                    value = value * 1000
+
                 # Format numbers using Spanish locale (comma as decimal separator)
                 if isinstance(value, (int, float)):
                     formatted_value = self._format_number_spanish(value)
