@@ -238,8 +238,16 @@ Enable verbose logging for troubleshooting:
 python main.py file.pdf --spreadsheet "ID" --verbose
 ```
 
-## Architectural decisions
+## Architecture
 
 Originally built as a small-scale experiment, this project loads htmx via a local minified file. This bypasses CDN
 restrictions present in the Servicio Canario de Salud's environment (Microsoft Edge). While migrating to a bundler like
 Vite or Webpack is planned, the local file remains for now as htmx is our only—and very lightweight—dependency.
+
+---
+
+### ⚠️ _Disclaimer_
+
+_As this was originally built as a small-scale experiment, the code in this repo was heavily vibe-coded to prioritise
+speed and exploration. This means it does not follow coding best practices and should not be used as an example of
+such._
